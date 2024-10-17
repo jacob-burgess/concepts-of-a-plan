@@ -1,12 +1,27 @@
 {
   "name": "@concepts/web",
-  "version": "0.0.0",
-  "type": "module",
+  "private": true,
   "sideEffects": false,
-  "exports": {
-    "./*": "./src/*.ts"
-  },
+  "type": "module",
   "scripts": {
-    "typecheck": "tsc --noEmit"
+    "dev": "COMPATIBILITY_DATE=2024-10-14 vinxi dev",
+    "build": "COMPATIBILITY_DATE=2024-10-14 vinxi build",
+    "start": "COMPATIBILITY_DATE=2024-10-14 vinxi start",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.59.15",
+    "@tanstack/react-router": "^1.70.0",
+    "@tanstack/react-router-with-query": "^1.70.0",
+    "@tanstack/start": "^1.70.0",
+    "@vitejs/plugin-react": "^4.3.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "vinxi": "^0.4.3"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1",
+    "typescript": "^5.6.3"
   }
 }
