@@ -35,7 +35,17 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <Meta />
       </Head>
       <Body>
-        {children}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            // justifyContent: "center",
+            height: "100vh",
+          }}
+        >
+          {children}
+        </div>
         <ScrollRestoration />
         <Scripts />
       </Body>

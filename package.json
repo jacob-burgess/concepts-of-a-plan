@@ -3,6 +3,14 @@
   "module": "index.ts",
   "type": "module",
   "private": true,
+  "scripts": {
+    "dev": "SECRET_KEY=super_secret sst dev",
+    "shell": "SECRET_KEY=super_secret sst shell",
+    "yeet": "SECRET_KEY=super_secret sst deploy --stage dev"
+  },
+  "dependencies": {
+    "sst": "3.2.31"
+  },
   "devDependencies": {
     "@types/aws-lambda": "8.10.145",
     "@types/bun": "latest"
@@ -13,7 +21,7 @@
   "workspaces": [
     "packages/*"
   ],
-  "dependencies": {
-    "sst": "3.2.31"
+  "overrides": {
+    "nitropack": "npm:nitropack-nightly@latest"
   }
 }

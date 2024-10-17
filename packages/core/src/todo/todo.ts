@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { fn } from "../utils/fn";
 import { DB } from "./todo.sql";
+import { fallback } from "@tanstack/router-zod-adapter";
+import { serverEnvVarFunction } from "../hello";
 
 export module Todo {
   export const Info = z.object({
@@ -16,17 +18,31 @@ export module Todo {
     DB.find((todo) => todo.id === id)
   );
 
-  export const ListParams = z.object({
-    limit: z.number().optional().default(10),
-    offset: z.number().optional().default(0),
+  // TODO: fallback is a tanstack thing, it doesnt belong in core. lazy rn
+  export const SearchParams = z.object({
+    query: fallback(z.string(), "").default(""),
+    limit: fallback(z.number(), 10).default(10),
+    offset: fallback(z.number(), 0).default(0),
   });
-  export type ListParams = z.infer<typeof ListParams>;
+  export type SearchParams = z.infer<typeof SearchParams>;
 
-  export const list = fn(ListParams, ({ limit, offset }) =>
-    DB.slice(offset, offset + limit)
-  );
+  export const SearchOut = z.object({
+    title: z.string(),
+  });
+  export type SearchOut = z.infer<typeof SearchOut>;
 
-  export const search = fn(z.string(), (query) =>
-    DB.filter((todo) => todo.title.toLowerCase().includes(query.toLowerCase()))
+  export const search = fn(
+    SearchParams,
+    async ({ query, limit, offset }): Promise<SearchOut[]> => {
+      console.log(serverEnvVarFunction());
+
+      if (query === "") {
+        return DB;
+      }
+
+      return DB.filter((todo) =>
+        todo.title.toLowerCase().includes(query.toLowerCase())
+      ).slice(offset, offset + limit);
+    }
   );
 }
